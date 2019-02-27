@@ -8,6 +8,7 @@
 #' @import stats
 #' @import utils
 #' @import data.table
+#' @import R6
 #' @importFrom lhs randomLHS
 #' @useDynLib mlrMBO c_sms_indicator c_eps_indicator
 NULL
