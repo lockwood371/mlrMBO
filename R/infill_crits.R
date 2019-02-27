@@ -155,11 +155,16 @@ makeMBOInfillCritCB = function(cb.lambda = NULL) {
 
 #' @export
 #' @rdname infillcrits
-makeMBOInfillCritAEI = function(aei.use.nugget = FALSE, se.threshold = 1e-6) {
+makeMBOInfillCritAEI = function(aei.use.nugget = FALSE, se.threshold = 1e-6, effetive.best.point = NULL) {
   assertFlag(aei.use.nugget)
   assertNumber(se.threshold, lower = 1e-20)
   force(aei.use.nugget)
   force(se.threshold)
+
+  # We need some unusual stuff to store the effective best point over multiple calls
+  # if the models are equal we expect that the effective best point is equal
+  force(effetive.best.point)
+  temp.models = NULL
 
   makeMBOInfillCrit(
     fun = function(points, models, control, par.set, designs, iter, progress, attributes = FALSE) {
@@ -170,6 +175,19 @@ makeMBOInfillCritAEI = function(aei.use.nugget = FALSE, se.threshold = 1e-6) {
       p.mu = maximize.mult * p$response
       p.se = p$se
 
+      # FIXME: The effective best point should be obtained globally and not depend on the design (which might be subsetted during focus search!)
+      if (identical(temp.models, models)) {
+        ebs = effetive.best.point
+      } else {
+        # calculate new effective best point
+        control2 = control
+        control2$propose.points = 1L
+        control2$infill.crit.fun = crit.cb1 #equal to the utility function in H
+        control2$infill.opt = "focussearch" #because focussearch does not need opt.path
+        props = proposePointsByInfillOptimization(par.set = par.set, control = control2, models = models, designs = designs, opt.path = NULL)
+        browser()
+
+      }
       ebs = getEffectiveBestPoint(design = design, model = model, par.set = par.set, control = control)
       # calculate EI with plugin, plugin val is mean response at ebs solution
       d = ebs$mu - p.mu
@@ -223,8 +241,7 @@ makeMBOInfillCritEQI = function(eqi.beta = 0.75, se.threshold = 1e-6) {
       p.se = p$se
 
       pure.noise.var = if (inherits(model$learner, "regr.km")) {
-        pure.noise.var = model$learner.model@covariance@nugget
-        #FIXME: What if kriging is wrapped?
+        pure.noise.var = getLearnerModel(model, more.unwrap = TRUE)@covariance@nugget
       } else {
         estimateResidualVariance(model, data = design, target = control$y.name)
       }

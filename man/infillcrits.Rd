@@ -20,7 +20,8 @@ makeMBOInfillCritEI(se.threshold = 1e-06)
 
 makeMBOInfillCritCB(cb.lambda = NULL)
 
-makeMBOInfillCritAEI(aei.use.nugget = FALSE, se.threshold = 1e-06)
+makeMBOInfillCritAEI(aei.use.nugget = FALSE, se.threshold = 1e-06,
+  effetive.best.point = NULL)
 
 makeMBOInfillCritEQI(eqi.beta = 0.75, se.threshold = 1e-06)
 
