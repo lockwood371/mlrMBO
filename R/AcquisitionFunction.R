@@ -4,7 +4,7 @@ AcquisitionFunction = R6Class("AcquisitionFunction",
     id = character(1L),
     name = character(1L),
     requirements = NULL,
-    opt_direction = character(1L),
+    opt_direction = character(1L), #should the acq fun be maximized or minimized or objective if the direction is the same as the direction of the objective function
     attributes = logical(1L),
 
     # constructor

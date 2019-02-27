@@ -3,22 +3,26 @@ AcquisitionFunctionEI = R6Class("AcquisitionFunctionEI",
   public = list(
     # public members
 
-    lambda = numeric(1L),
+    se_threshold = numeric(1L),
     model = NULL,
+    y_min = numeric(1L),
 
     # constructor
-    initialize = function(lambda = 2, attributes = FALSE) {
-      self$lambda = assert_number(lambda, lower = 0)
-      super$initialize(id = "CB", requirements = "se", opt_direction = "objective", attributes = attributes)
+    initialize = function(se.threshold = 1e-6, attributes = FALSE) {
+      self$se_threshold = assert_number(se.threshold, lower = 1e-20)
+      super$initialize(id = "EI", name = "Expected Improvement", requirements = "se", opt_direction = "maximize", attributes = attributes)
     },
 
     # public methods
     prepare = function(opt.state) {
       opt.problem = getOptStateOptProblem(opt.state)
-      fun = getOptProblemFun(opt.problem)
-      self$opt_direction = ifelse(shouldBeMinimized(fun), "minimize", "maximize")
-
+      control = getOptProblemControl(opt.problem)
+      assertString(control$y.name)
+      y = design[, control$y.name]
+      assertNumeric(y, any.missing = FALSE)
       self$model = getOptStateModels(opt.state)[[1]]
+
+
     },
 
     evaluate_all = function(x) {
