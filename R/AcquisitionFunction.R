@@ -23,7 +23,7 @@ AcquisitionFunction = R6Class("AcquisitionFunction",
       stop("not implemented")
     },
 
-    # returns all Acquisition Function Values
+    # returns all Acquisition Function Values (attributes)
     # x - data.frame
     # res - data.frame with at least $acq column
     evaluate_all = function(x) {
@@ -35,7 +35,8 @@ AcquisitionFunction = R6Class("AcquisitionFunction",
     evaluate = function(x, attributes = self$attributes) {
       res_all = self$evaluate_all(x)
       res = res_all$acq
-      if (attributes) {
+      assert_numeric(res, any.missing = FALSE, len = nrow(x))
+      if (attributes && ncol(res_all) > 1) {
         res_all$acq = NULL
         res = setAttribute(res, "crit.components", res_all)
       }
@@ -45,13 +46,13 @@ AcquisitionFunction = R6Class("AcquisitionFunction",
     # see evaluate
     # res - converted to min problem
     evaluate_as_minimization = function(x) {
-      self$mult_inv_max * self$evaluate(x)
+      self$mult_max_to_min * self$evaluate(x, attributes = FALSE)
     }
   ),
 
   # active bindings
   active = list(
     # multiplier to invert maximization to minimization
-    mult_inv_max = function() if (self$opt_direction == "minimize") 1 else -1
+    mult_max_to_min = function() if (self$opt_direction == "minimize") 1 else -1
   )
 )

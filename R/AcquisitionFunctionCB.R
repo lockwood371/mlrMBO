@@ -23,7 +23,7 @@ AcquisitionFunctionCB = R6Class("AcquisitionFunctionCB",
 
     evaluate_all = function(x) {
       p = predict(self$model, newdata = x)$data
-      res = p$response + self$mult_inv_max * cb.lambda * p$se
+      res = p$response + self$mult_max_to_min * cb.lambda * p$se
       data.frame(acq = res, se = p$se, mean = p$response, lambda = self$lambda)
     }
   )
