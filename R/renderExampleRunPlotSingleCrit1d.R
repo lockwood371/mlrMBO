@@ -148,6 +148,7 @@ renderExampleRunPlot1d = function(x, iter,
     g = g + ggplot2::geom_point(data = gg.points, ggplot2::aes_string(x = names.x, y = name.y, colour = "type", shape = "type"), size = point.size)
     g = g + ggplot2::scale_colour_manual(values = colors, name = "type")
     g = g + ggplot2::scale_linetype(name = "type")
+    g = g + scale_fill_discrete(name = "Dose", labels = c("INIT", "B", "C"))
 
     if (noisy) {
       if (!anyMissing(x$y.true)) {
@@ -161,7 +162,7 @@ renderExampleRunPlot1d = function(x, iter,
       gap = calculateGap(design[idx.pastpresent,, drop = FALSE], global.opt, control)
     }
 
-    g = g + ggplot2::ggtitle(sprintf("Iter = %i, Gap = %.4e", iter, gap))
+    g = g + ggplot2::ggtitle(sprintf("Iteracja: %i, Różnica: %.4e", iter, gap))
     g = g + ggplot2::ylab(NULL)
     g = g + ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11, face = "bold")
