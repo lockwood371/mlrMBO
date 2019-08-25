@@ -152,7 +152,7 @@ renderExampleRunPlot1d = function(x, iter,
     g = g + ggplot2::geom_point(data = gg.points, ggplot2::aes_string(x = names.x, y = name.y, colour = "type", shape = "type"), size = point.size)
     g = g + ggplot2::scale_colour_manual(values = colors, name = "type")
     g = g + ggplot2::scale_linetype(name = "type")
-    g = g + + ggplot2::theme(
+    g = g + ggplot2::theme(
                         panel.background = element_rect(fill = "white", colour = "bisque3", size = 0.5, linetype = "solid"),
                         panel.grid.major = element_line(size = 0.25, linetype = 'solid',colour = "bisque2"), 
                         panel.grid.minor = element_line(size = 0.1, linetype = 'solid',colour = "bisque2"))
