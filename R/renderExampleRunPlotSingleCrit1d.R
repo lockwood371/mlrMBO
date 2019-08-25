@@ -14,6 +14,8 @@ renderExampleRunPlot1d = function(x, iter,
   colors = c("red", "blue", "green"), ...)  {
   requirePackages("ggplot2")
 
+  print("UDAŁO SIĘ - renderExampleRunPlotSingleCrit1d.R")
+  
   # extract relevant data from MBOExampleRun
   par.set = x$par.set
   names.x = x$names.x
@@ -148,7 +150,7 @@ renderExampleRunPlot1d = function(x, iter,
     g = g + ggplot2::geom_point(data = gg.points, ggplot2::aes_string(x = names.x, y = name.y, colour = "type", shape = "type"), size = point.size)
     g = g + ggplot2::scale_colour_manual(values = colors, name = "type")
     g = g + ggplot2::scale_linetype(name = "type")
-    g = g + scale_fill_discrete(name = "Dose", labels = c("INIT", "B", "C"))
+    g = g + ggplot2::scale_fill_discrete(name = "Dose", labels = c("INIT", "B", "C"))
 
     if (noisy) {
       if (!anyMissing(x$y.true)) {
