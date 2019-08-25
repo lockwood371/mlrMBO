@@ -147,7 +147,7 @@ renderExampleRunPlot1d = function(x, iter,
     if (se && densregion) {
       #FIXME: We might lose transformation information here tr()
       next.aes = ggplot2::aes_string(x = names.x, ymin = "value-se", ymax = "value+se")
-      g = g + ggplot2::geom_ribbon(data = gg.fun[gg.fun$variable == "yhat", ], next.aes, alpha = 0.2, color = "bisque3", fill="bisque")
+      g = g + ggplot2::geom_ribbon(data = gg.fun[gg.fun$variable == "yhat", ], next.aes, alpha = 0.2, color = "bisque3", fill="bisque2")
     }
     g = g + ggplot2::geom_point(data = gg.points, ggplot2::aes_string(x = names.x, y = name.y, colour = "type", shape = "type"), size = point.size)
     
