@@ -151,8 +151,10 @@ renderExampleRunPlot1d = function(x, iter,
     }
     g = g + ggplot2::geom_point(data = gg.points, ggplot2::aes_string(x = names.x, y = name.y, colour = "type", shape = "type"), size = point.size)
     
-    g = g + ggplot2::scale_colour_manual(values = colors, name = "Typ")
-    g = g + ggplot2::scale_shape_manual(values = names(colors), name = "Typ")
+    ff.shapes = c(15,17,19)
+    names(ff.shapes) = c("init", "prop", "seq")
+    g = g + ggplot2::scale_colour_manual(values = colors, name = "Typ", labels = c("init", "prop", "seq"))
+    g = g + ggplot2::scale_shape_manual(values = ff.shapes, name = "Typ", labels = c("init", "prop", "seq"))
     g = g + ggplot2::scale_linetype(name = "Typ")
     g = g + ggplot2::theme(
                         panel.background = element_rect(fill = "white", colour = "bisque3", size = 0.5, linetype = "solid"),
