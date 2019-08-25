@@ -20,6 +20,8 @@ renderExampleRunPlot2d = function(x, iter,
   colors = c("red", "blue", "green"), ...)  {
   requirePackages("ggplot2")
 
+  print("UDAŁO SIĘ - renderExampleRunPlotSingleCrit2d.R")
+  
   # extract information from example run object
   par.set = x$par.set
   names.x = x$names.x
