@@ -13,8 +13,6 @@ renderExampleRunPlot1d = function(x, iter,
   trafo = NULL,
   colors = c("red", "blue", "green"), ...)  {
   requirePackages("ggplot2")
-
-  print("UDAŁO SIĘ - renderExampleRunPlotSingleCrit1d.R")
   
   # extract relevant data from MBOExampleRun
   par.set = x$par.set
@@ -110,6 +108,8 @@ renderExampleRunPlot1d = function(x, iter,
   }
 
   if (isNumeric(par.set, include.int = FALSE)) {
+    print("UDAŁO SIĘ - Numeric")
+    
     gg.fun = data.table::setDF(data.table::melt(evals, id.vars = c(getParamIds(opt.path$par.set), if (se) "se" else NULL)))
 
     if (se) gg.fun$se = gg.fun$se * se.factor
@@ -141,7 +141,9 @@ renderExampleRunPlot1d = function(x, iter,
     g = ggplot2::ggplot(data = gg.fun)
     next.aes = ggplot2::aes_string(x = names.x, y = "value", linetype = "variable")
     g = g + ggplot2::geom_line(next.aes, size = line.size)
-    g = g + ggplot2::facet_grid(pane~., scales = "free")
+    pane.labs <- c("f(x)","EI(x)")  
+    names(pane.labs) <- c("y","ei")
+    g = g + ggplot2::facet_grid(pane~., scales = "free", labeller = labeller(pane = pane.labs))
     if (se && densregion) {
       #FIXME: We might lose transformation information here tr()
       next.aes = ggplot2::aes_string(x = names.x, ymin = "value-se", ymax = "value+se")
@@ -150,7 +152,10 @@ renderExampleRunPlot1d = function(x, iter,
     g = g + ggplot2::geom_point(data = gg.points, ggplot2::aes_string(x = names.x, y = name.y, colour = "type", shape = "type"), size = point.size)
     g = g + ggplot2::scale_colour_manual(values = colors, name = "type")
     g = g + ggplot2::scale_linetype(name = "type")
-    g = g + ggplot2::scale_fill_discrete(name = "Dose", labels = c("INIT", "B", "C"))
+    g = g + + ggplot2::theme(
+                        panel.background = element_rect(fill = "white", colour = "bisque3", size = 0.5, linetype = "solid"),
+                        panel.grid.major = element_line(size = 0.25, linetype = 'solid',colour = "bisque2"), 
+                        panel.grid.minor = element_line(size = 0.1, linetype = 'solid',colour = "bisque2"))
 
     if (noisy) {
       if (!anyMissing(x$y.true)) {
@@ -164,7 +169,7 @@ renderExampleRunPlot1d = function(x, iter,
       gap = calculateGap(design[idx.pastpresent,, drop = FALSE], global.opt, control)
     }
 
-    g = g + ggplot2::ggtitle(sprintf("Iteracja: %i, Różnica: %.4e", iter, gap))
+    g = g + ggplot2::ggtitle(sprintf("Iteracja %i: \u0394 = %.4e", iter, gap))
     g = g + ggplot2::ylab(NULL)
     g = g + ggplot2::theme(
       plot.title = ggplot2::element_text(size = 11, face = "bold")
