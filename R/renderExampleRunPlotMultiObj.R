@@ -4,6 +4,7 @@ renderExampleRunPlot.MBOExampleRunMultiObj = function(object, iter, densregion =
   se.factor = 1, single.prop.point.plots = FALSE, xlim = NULL, ylim = NULL, point.size = 3,
   line.size = 1, trafo = NULL, colors = c("red", "blue", "green"), ...) {
 
+    print("UDAŁO SIĘ - renderExampleRunPlotMultiObj")
 
   # extract variables and some short names
   mbo.res = object$mbo.res
