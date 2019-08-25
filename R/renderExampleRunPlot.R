@@ -66,5 +66,6 @@
 renderExampleRunPlot =  function(object, iter, densregion = TRUE,
   se.factor = 1, single.prop.point.plots = FALSE, xlim = NULL, ylim = NULL,
   point.size = 3, line.size = 1, trafo = NULL, colors = c("red", "blue", "green"), ...) {
+    print("UDAŁO SIĘ - renderExampleRunPlot")
   UseMethod("renderExampleRunPlot")
 }
