@@ -5,6 +5,8 @@ renderExampleRunPlot.MBOExampleRun = function(object, iter, densregion = TRUE,
   point.size = 3, line.size = 1, trafo = NULL, colors = c("red", "blue", "green"), ...) {
 
   requirePackages("ggplot2")
+  
+  print("UDAŁO SIĘ - renderExampleRunPlotSingleCrit")
 
   iters.max = object$control$iters
   iter = asInt(iter, lower = 1L, upper = iters.max)
