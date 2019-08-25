@@ -141,21 +141,23 @@ renderExampleRunPlot1d = function(x, iter,
     g = ggplot2::ggplot(data = gg.fun)
     next.aes = ggplot2::aes_string(x = names.x, y = "value", linetype = "variable")
     g = g + ggplot2::geom_line(next.aes, size = line.size)
-    pane.labs <- c("f(x)","EI(x)")  
+    pane.labs <- c("y","EI")  
     names(pane.labs) <- c("y","ei")
     g = g + ggplot2::facet_grid(pane~., scales = "free", labeller = labeller(pane = pane.labs))
     if (se && densregion) {
       #FIXME: We might lose transformation information here tr()
       next.aes = ggplot2::aes_string(x = names.x, ymin = "value-se", ymax = "value+se")
-      g = g + ggplot2::geom_ribbon(data = gg.fun[gg.fun$variable == "yhat", ], next.aes, alpha = 0.2)
+      g = g + ggplot2::geom_ribbon(data = gg.fun[gg.fun$variable == "yhat", ], next.aes, alpha = 0.2, colour = "bisque3")
     }
     g = g + ggplot2::geom_point(data = gg.points, ggplot2::aes_string(x = names.x, y = name.y, colour = "type", shape = "type"), size = point.size)
-    g = g + ggplot2::scale_colour_manual(values = colors, name = "type")
-    g = g + ggplot2::scale_linetype(name = "type")
+    
+    g = g + ggplot2::scale_colour_manual(values = colors, name = "Typ")
+    g = g + ggplot2::scale_linetype(name = "Typ")
     g = g + ggplot2::theme(
                         panel.background = element_rect(fill = "white", colour = "bisque3", size = 0.5, linetype = "solid"),
                         panel.grid.major = element_line(size = 0.25, linetype = 'solid',colour = "bisque2"), 
-                        panel.grid.minor = element_line(size = 0.1, linetype = 'solid',colour = "bisque2"))
+                        panel.grid.minor = element_line(size = 0.1, linetype = 'solid',colour = "bisque2"),
+                        strip.background = element_rect(color="bisque3", fill="bisque2", size=0.5, linetype="solid"))
 
     if (noisy) {
       if (!anyMissing(x$y.true)) {
